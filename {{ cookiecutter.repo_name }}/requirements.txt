@@ -1,0 +1,15 @@
+# local package
+-e .
+
+# external requirements
+wheel
+coverage
+flake8
+tox
+pre-commit
+mypy
+pyupgrade
+
+# data science requirements
+numpy
+pandas
