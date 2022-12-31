@@ -40,15 +40,15 @@ except subprocess.CalledProcessError:
 print(f"Create {'pip.ini' if OPERATING_SYSTEM=='Windows' else 'pip.conf'}")
 
 # Add pip configuration if needed
-pip_file = """[global]
-trusted-host = xxx
-index = xxx
-index-url = xxx
-"""
-if OPERATING_SYSTEM == "Windows":
-    Path("env/pip.ini").write_text(pip_file)
-else:
-    Path("env/pip.conf").write_text(pip_file)
+# pip_file = """[global]
+# trusted-host = xxx
+# index = xxx
+# index-url = xxx
+# """
+# if OPERATING_SYSTEM == "Windows":
+#     Path("env/pip.ini").write_text(pip_file)
+# else:
+#     Path("env/pip.conf").write_text(pip_file)
 
 print("Upgrade pip, setuptools and wheel")
 try:

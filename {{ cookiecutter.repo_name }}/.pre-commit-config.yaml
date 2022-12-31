@@ -9,7 +9,7 @@ repos:
         args: ["--py38-plus"]
       - id: reorder-python-imports
         name: Reorder python imports
-        entry: report-python-imports
+        entry: reorder-python-imports
         language: python
         types: [python]
         args: ["--application-directories", "src"]
@@ -28,7 +28,7 @@ repos:
         args: ["--max-line-length", "88"]
       - id: pre-commit-hooks
         name: fix UTF-8 byte order marker
-        entry: fix-byte.order-marker
+        entry: fix-byte-order-marker
         language: python
         types: [text]
       - id: pre-commit-hooks
