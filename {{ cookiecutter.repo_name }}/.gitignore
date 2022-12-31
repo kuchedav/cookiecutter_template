@@ -95,3 +95,6 @@ target/
 *.cer
 *.pam
 *.key
+
+# ignore version file
+_version.py
