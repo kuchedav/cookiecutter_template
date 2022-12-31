@@ -18,12 +18,6 @@ globals:
 # COMMANDS                                                                      #
 #################################################################################
 
-## Install Python Dependencies
-environment:
-	python3 -m venv env
-	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
-	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
-
 ## Delete all compiled Python files
 clean:
 	find . -type f -name "*.py[co]" -delete
@@ -32,5 +26,10 @@ clean:
 active:
 	source $(PROJECT_DIR)/env/bin/activate
 
-tox:
-	tox
+package:
+	$(PYTHON_INTERPRETER) -m build
+
+publish: package
+	twine check dist/*
+
+	

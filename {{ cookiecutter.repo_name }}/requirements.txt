@@ -11,6 +11,9 @@ pre-commit-hooks
 reorder-python-imports
 mypy
 pyupgrade
+twine
+build
+setuptools_scm
 
 # data science requirements
 numpy
