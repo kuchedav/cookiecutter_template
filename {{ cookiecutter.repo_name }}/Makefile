@@ -30,6 +30,11 @@ package:
 	$(PYTHON_INTERPRETER) -m build
 
 publish: package
+	@echo 'THIS COMMAND ONLY DEPLOYS TO TEST_PYPI'
+	@echo 'To deploy to PYPI use the command publish_prod'
 	twine check dist/*
+	twine upload -r testpypi dist/*
 
-	
+publish_prod: package
+	twine check dist/*
+	twine upload -r pypi dist/*
