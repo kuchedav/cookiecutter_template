@@ -37,14 +37,14 @@ except subprocess.CalledProcessError:
     print("Error: Failed to create environment!")
     sys.exit(1)
 
-print(f"Create { 'pip.ini' if OPERATING_SYSTEM == "Windows" else "pip.conf"}")
+print(f"Create {'pip.ini' if OPERATING_SYSTEM=='Windows' else 'pip.conf'}")
 
+# Add pip configuration if needed
 pip_file = """[global]
 trusted-host = xxx
 index = xxx
 index-url = xxx
 """
-
 if OPERATING_SYSTEM == "Windows":
     Path("env/pip.ini").write_text(pip_file)
 else:
@@ -78,7 +78,6 @@ except subprocess.CalledProcessError:
     sys.exit(1)
 
 print("initial commit")
-
 try:
     for i in range(2):
         if OPERATING_SYSTEM == "Windows":
