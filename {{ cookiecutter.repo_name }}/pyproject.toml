@@ -4,8 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 authors = [
-  {name = "<AUTHOR_NAME>"},
+  {name = "{{ cookiecutter.repo_name }}", email = "{{ cookiecutter.e_mail }}"},
 ]
+
 dependencies = [
   "pandas >= 1.4.0",
 ]

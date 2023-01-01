@@ -23,18 +23,21 @@ clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
 
-active:
-	source $(PROJECT_DIR)/env/bin/activate
-
 package:
+	rm -rf dist/*
 	$(PYTHON_INTERPRETER) -m build
 
-publish: package
+check_credentials_exist:
+	[ -f ~/.pypi ] && echo 'pypi credentials file found' || echo '~/.pypi file not found!'
+
+publish: package check_credentials_exist
+	twine check dist/*
+	twine upload --repository testpypi --config-file ~/.pypi dist/*
+	@echo '==============================================='
 	@echo 'THIS COMMAND ONLY DEPLOYS TO TEST_PYPI'
 	@echo 'To deploy to PYPI use the command publish_prod'
-	twine check dist/*
-	twine upload -r testpypi dist/*
 
-publish_prod: package
+publish_prod: check_credentials_exist
 	twine check dist/*
-	twine upload -r pypi dist/*
+	twine upload --repository pypi --config-file ~/.pypi dist/*
+
