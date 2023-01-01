@@ -15,14 +15,3 @@ $ pip install cookiecutter
 ------------
 
     cookiecutter https://github.com/kuchedav/cookiecutter_template.git
-
-
-### Installing development requirements
-------------
-
-    pip install -r requirements.txt
-
-### Running the tests
-------------
-
-    py.test tests
