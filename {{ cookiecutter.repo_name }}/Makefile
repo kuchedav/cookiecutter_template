@@ -40,4 +40,3 @@ publish: package check_credentials_exist
 publish_prod: check_credentials_exist
 	twine check dist/*
 	twine upload --repository pypi --config-file ~/.pypi dist/*
-
