@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 authors = [
-{%- if cookiecutter.author_email.none() -%}
-{name = "{{ cookiecutter.repo_name }}"},
-{%- else -%}
-{name = "{{ cookiecutter.repo_name }}", email = "{{ cookiecutter.author_email }}"},
+{% if cookiecutter.author_email is defined %}
+{name = "{{ cookiecutter.author_name }}"},
+{% else %}
+{name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}"},
 {% endif %}
 ]
 
@@ -15,7 +15,7 @@ dependencies = [
   "pandas >= 1.4.0",
 ]
 dynamic = ["version"]
-name = "{{ cookiecutter.  repo_name }}"
+name = "{{ cookiecutter.repo_name }}"
 readme = "README.md"
 requires-python = ">=3.8"
 
@@ -26,11 +26,11 @@ dev = [
 
 [tool.coverage.run]
 source_pkgs = [
-  "{{ cookiecutter.  repo_name }}",
+  "{{ cookiecutter.repo_name }}",
 ]
 
 [tool.mypy]
-files = "src/{{ cookiecutter.  repo_name }}"
+files = "src/{{ cookiecutter.repo_name }}"
 ignore_missing_imports = true
 python_version = "3.8"
 
