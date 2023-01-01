@@ -1,3 +1,3 @@
-# {{ cookiecutter.repo_name }}
+# {{ cookiecutter.repo_name }}
 
-# {{ cookiecutter.description }}
+{{ cookiecutter.description }}
