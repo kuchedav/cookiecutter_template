@@ -51,3 +51,10 @@ publish_prod: check_credentials_exist test
 
 test:
 	tox
+
+docker_package:
+	docker build . -t {{ cookiecutter.repo_name }}:$(PACKAGE_VERSION_CLEAN)
+
+docker_hub_push: docker_package
+	docker tag {{ cookiecutter.repo_name }}:$(PACKAGE_VERSION_CLEAN) kuchedav/{{ cookiecutter.repo_name }}:$(PACKAGE_VERSION_CLEAN)
+	docker push kuchedav/{{ cookiecutter.repo_name }}:$(PACKAGE_VERSION_CLEAN)
