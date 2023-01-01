@@ -13,14 +13,19 @@ globals:
 	@echo 'PROJECT_DIR: ' $(PROJECT_DIR)
 	@echo 'PROJECT_NAME: ' $(PROJECT_NAME)
 	@echo 'PYTHON_INTERPRETER: ' $(PYTHON_INTERPRETER)
+	@echo 'PACKAGE_VERSION: ' $(PACKAGE_VERSION)
+	@echo 'PACKAGE_VERSION_CLEAN: ' $(PACKAGE_VERSION_CLEAN)
 
-functions:
+commands:
 	@echo '=============================================='
 	@echo '=    displaying all functions available      ='
 	@echo '=============================================='
 	@echo 'test: run tox to fully test package'
 	@echo 'publish: publish package to pypi_test server'
 	@echo 'publish_prod: publish package to pypi server'
+	@echo 'docker_package: docker build the Dockerfile to create the image'
+	@echo 'docker_hub_push: push docker image to docker hub'
+	@echo '		Make sure to be loged into docker with an access token'
 
 #################################################################################
 # COMMANDS                                                                      #
@@ -53,8 +58,12 @@ test:
 	tox
 
 docker_package:
-	docker build . -t {{ cookiecutter.repo_name }}:$(PACKAGE_VERSION_CLEAN)
+	docker build . -t {{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN)
 
 docker_hub_push: docker_package
-	docker tag {{ cookiecutter.repo_name }}:$(PACKAGE_VERSION_CLEAN) kuchedav/{{ cookiecutter.repo_name }}:$(PACKAGE_VERSION_CLEAN)
-	docker push kuchedav/{{ cookiecutter.repo_name }}:$(PACKAGE_VERSION_CLEAN)
+	docker tag {{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN) kuchedav/{{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN)
+	docker push kuchedav/{{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN)
+
+helm:
+	helm lint ./helm/
+	helm install -name {{ cookiecutter.chart_name }} ./helm
