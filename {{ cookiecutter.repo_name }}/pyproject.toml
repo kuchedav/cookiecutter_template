@@ -4,7 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 authors = [
-  {name = "{{ cookiecutter.repo_name }}", email = "{{ cookiecutter.author_email }}"},
+{%- if cookiecutter.author_email.none() -%}
+{name = "{{ cookiecutter.repo_name }}"},
+{%- else -%}
+{name = "{{ cookiecutter.repo_name }}", email = "{{ cookiecutter.author_email }}"},
+{% endif %}
 ]
 
 dependencies = [
