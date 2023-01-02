@@ -1,7 +1,3 @@
-# local package
--e .
-
-# external requirements
 wheel
 coverage
 flake8
@@ -14,7 +10,6 @@ pyupgrade
 twine
 build
 setuptools_scm
-
-# data science requirements
 numpy
 pandas
+-e .

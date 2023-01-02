@@ -57,7 +57,10 @@ publish_prod: check_credentials_exist test
 test:
 	tox
 
-git:
+pip_requirements:
+	pip freeze > requirements.txt
+
+git: pip_requirements
 	git add .
 	git commit -m "debug"
 	git push origin main
