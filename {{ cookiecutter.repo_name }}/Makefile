@@ -3,17 +3,15 @@
 #################################################################################
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-PROJECT_NAME = test
 PYTHON_INTERPRETER = $(PROJECT_DIR)/env/bin/python
+PACKAGE_VERSION_CLEAN = $(shell python -m setuptools_scm --strip-dev)
 
 globals:
 	@echo '=============================================='
 	@echo '=    displaying all global variables         ='
 	@echo '=============================================='
 	@echo 'PROJECT_DIR: ' $(PROJECT_DIR)
-	@echo 'PROJECT_NAME: ' $(PROJECT_NAME)
 	@echo 'PYTHON_INTERPRETER: ' $(PYTHON_INTERPRETER)
-	@echo 'PACKAGE_VERSION: ' $(PACKAGE_VERSION)
 	@echo 'PACKAGE_VERSION_CLEAN: ' $(PACKAGE_VERSION_CLEAN)
 
 commands:
@@ -26,6 +24,8 @@ commands:
 	@echo 'docker_package: docker build the Dockerfile to create the image'
 	@echo 'docker_hub_push: push docker image to docker hub'
 	@echo '		Make sure to be loged into docker with an access token'
+	@echo 'helm: build docker package, upload to docker hub, delete local image...'
+	@echo '		...delete current helm install and install new helm chart'
 
 #################################################################################
 # COMMANDS                                                                      #
@@ -57,15 +57,25 @@ publish_prod: check_credentials_exist test
 test:
 	tox
 
+git:
+	git add .
+	git commit -m "debug"
+	git push origin main
+
 docker_package:
+	@echo '==========================================================================='
 	@echo 'MAKE SURE TO RUN ONLY ON A CLEAN GIT BRANCH'
-	docker build . -t {{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN)
+	@echo '==========================================================================='
+	docker build . -t kuchedav/{{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN)
 
 docker_hub_push: docker_package
-	docker tag {{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN) kuchedav/{{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN)
 	docker push kuchedav/{{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN)
 
-helm: docker_hub_push
+docker_clean:
+	docker rmi kuchedav/{{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN)
+
+helm: docker_hub_push docker_clean
+	sed -i "" "/^\([[:space:]]*version: \).*/s//\1$(PACKAGE_VERSION_CLEAN)/" helm/Chart.yaml
 	helm lint ./helm/
 	helm uninstall {{ cookiecutter.chart_name }}
 	helm install {{ cookiecutter.chart_name }} ./helm
