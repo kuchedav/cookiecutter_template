@@ -58,12 +58,14 @@ test:
 	tox
 
 docker_package:
+	@echo 'MAKE SURE TO RUN ONLY ON A CLEAN GIT BRANCH'
 	docker build . -t {{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN)
 
 docker_hub_push: docker_package
 	docker tag {{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN) kuchedav/{{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN)
 	docker push kuchedav/{{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN)
 
-helm:
+helm: docker_hub_push
 	helm lint ./helm/
-	helm install -name {{ cookiecutter.chart_name }} ./helm
+	helm uninstall {{ cookiecutter.chart_name }}
+	helm install {{ cookiecutter.chart_name }} ./helm
