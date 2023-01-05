@@ -14,7 +14,7 @@ alias ke='kubectl exec -it'
 ## debugging
 ### Start and enter Buybox
 ```
-kubectl run -i --tty busybox --image=busybox --restart=Never -- sh  
+kubectl run -i --tty busybox --image=busybox --restart=Never -- sh
 ```
 
 ### Port forwarding
