@@ -5,6 +5,7 @@ tox
 pre-commit
 pre-commit-hooks
 reorder-python-imports
+black
 mypy
 pyupgrade
 twine
