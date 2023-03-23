@@ -30,15 +30,12 @@ except subprocess.CalledProcessError:
     print("Error: Failed to initialize the repository with git!")
     sys.exit(1)
 
-print("create environemnt")
+print("create environemnt with python 3.9")
 try:
-    subprocess.run(["python","-m","venv","env"], check=True)
+    subprocess.run(["python3.9","-m","venv","env"], check=True)
 except subprocess.CalledProcessError:
-    try:
-        subprocess.run(["python3.9","-m","venv","env"], check=True)
-    except subprocess.CalledProcessError:
-        print("Error: Failed to create environment!")
-        sys.exit(1)
+    print("Error: Failed to create environment!")
+    sys.exit(1)
 
 print(f"Create {'pip.ini' if OPERATING_SYSTEM=='Windows' else 'pip.conf'}")
 
