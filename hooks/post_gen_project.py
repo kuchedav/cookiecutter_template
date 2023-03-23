@@ -34,8 +34,11 @@ print("create environemnt")
 try:
     subprocess.run(["python","-m","venv","env"], check=True)
 except subprocess.CalledProcessError:
-    print("Error: Failed to create environment!")
-    sys.exit(1)
+    try:
+        subprocess.run(["python3.9","-m","venv","env"], check=True)
+    except subprocess.CalledProcessError:
+        print("Error: Failed to create environment!")
+        sys.exit(1)
 
 print(f"Create {'pip.ini' if OPERATING_SYSTEM=='Windows' else 'pip.conf'}")
 
