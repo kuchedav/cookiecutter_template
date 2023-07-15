@@ -22,6 +22,9 @@ pythonproject_toml.write_text(
     pythonproject_toml.read_text().replace("<AUTHOR_NAME>", author_name)
 )
 
+########################################################################################
+# GIT init                                                                             #
+########################################################################################
 print("Initialize git")
 try:
     subprocess.run(["git","init","."], check=True)
@@ -30,7 +33,10 @@ except subprocess.CalledProcessError:
     print("Error: Failed to initialize the repository with git!")
     sys.exit(1)
 
-print("create environemnt with python 3.9")
+########################################################################################
+# VENV                                                                                 #
+########################################################################################
+print("create environment with python 3.9")
 try:
     subprocess.run(["python3.9","-m","venv","env"], check=True)
 except subprocess.CalledProcessError:
@@ -73,7 +79,7 @@ except subprocess.CalledProcessError:
     sys.exit(1)
 
 ########################################################################################
-# GIT                                                                                  #
+# GIT initial commit                                                                   #
 ########################################################################################
 print("initial commit")
 try:
