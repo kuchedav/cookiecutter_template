@@ -39,17 +39,9 @@ except subprocess.CalledProcessError:
 
 print(f"Create {'pip.ini' if OPERATING_SYSTEM=='Windows' else 'pip.conf'}")
 
-# Add pip configuration if needed
-# pip_file = """[global]
-# trusted-host = xxx
-# index = xxx
-# index-url = xxx
-# """
-# if OPERATING_SYSTEM == "Windows":
-#     Path("env/pip.ini").write_text(pip_file)
-# else:
-#     Path("env/pip.conf").write_text(pip_file)
-
+########################################################################################
+# PIP install                                                                          #
+########################################################################################
 print("Upgrade pip, setuptools and wheel")
 try:
     subprocess.run([
@@ -68,7 +60,10 @@ except subprocess.CalledProcessError:
     print("Error: Failed to install pip packages!")
     sys.exit(1)
 
-print("setup git hook scripts")
+########################################################################################
+# pre-commit                                                                           #
+########################################################################################
+print("setup pre-commit hook scripts")
 try:
     subprocess.run([
         PRE_COMMIT_PATH, "install"
@@ -77,6 +72,9 @@ except subprocess.CalledProcessError:
     print("Error: Failed to setup git hook scripts!")
     sys.exit(1)
 
+########################################################################################
+# GIT                                                                                  #
+########################################################################################
 print("initial commit")
 try:
     for i in range(2):
