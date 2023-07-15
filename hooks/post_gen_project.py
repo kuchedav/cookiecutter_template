@@ -5,6 +5,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+import daves_utilities
+
+
 OPERATING_SYSTEM = platform.system()
 if OPERATING_SYSTEM == "Windows":
     PYTHON_PATH = "env/Script/python.exe"
@@ -51,19 +54,40 @@ print(f"Create {'pip.ini' if OPERATING_SYSTEM=='Windows' else 'pip.conf'}")
 print("Upgrade pip, setuptools and wheel")
 try:
     subprocess.run([
-        PYTHON_PATH, "-m","pip","install","--upgrade","pip","setuptools","wheel"
+        PYTHON_PATH, "-m","pip","install","--upgrade","pip","setuptools","wheel", "poetry"
     ], check=True)
 except subprocess.CalledProcessError:
-    print("Error: Failed to upgrade pip, setuptools and wheel!")
+    print("Error: Failed to upgrade pip, setuptools, wheel and poetry!")
     sys.exit(1)
 
-print("Install requirements")
+print("Install project as package")
 try:
     subprocess.run([
-        PIP_PATH, "install", "--upgrade", "-r", "requirements.txt"
+        PYTHON_PATH, "-m","pip","install","-e",".[dev]"
     ], check=True)
 except subprocess.CalledProcessError:
-    print("Error: Failed to install pip packages!")
+    print("Error: Failed to upgrade pip, setuptools, wheel and poetry!")
+    sys.exit(1)
+
+print("Poetry install requirements")
+try:
+    subprocess.run([
+        "poetry","install"
+    ], check=True)
+except subprocess.CalledProcessError:
+    print("Error: Failed to install packages using poetry!")
+    sys.exit(1)
+
+kuchedav
+@KS#XiK2H!X!mri@sayV
+password = 
+print("Poetry add credentials to publish")
+try:
+    subprocess.run([
+        "poetry","config","http-basic.pypi","kuchedav",f"{password}"
+    ], check=True)
+except subprocess.CalledProcessError:
+    print("Error: Failed to install packages using poetry!")
     sys.exit(1)
 
 ########################################################################################
