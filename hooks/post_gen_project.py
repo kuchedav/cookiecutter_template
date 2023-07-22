@@ -5,7 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-import daves_utilities
+from daves_utilities.david_secrets import decrypt_message, encrypt_message
 
 
 OPERATING_SYSTEM = platform.system()
@@ -78,9 +78,10 @@ except subprocess.CalledProcessError:
     print("Error: Failed to install packages using poetry!")
     sys.exit(1)
 
-kuchedav
-@KS#XiK2H!X!mri@sayV
-password = 
+password = decrypt_message(
+    'gAAAAABku6ME79Pf2Uqs5VZnSPoc6NRBH2DnrsqI4wu9jNE6aML5iL5ZPpnyDy6j751SVBXL0NRAMen'
+    'InYrzHAW3IK4mRy0zvVQhMTmTQ8ZD_aDa3Oq_PIs='
+)
 print("Poetry add credentials to publish")
 try:
     subprocess.run([
