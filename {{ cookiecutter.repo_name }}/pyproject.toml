@@ -1,27 +1,16 @@
-[build-system]
-requires = ["setuptools", "setuptools-scm"]
-build-backend = "setuptools.build_meta"
+[tool.mypy]
+files = "src/{{ cookiecutter.repo_name }}"
+ignore_missing_imports = true
+python_version = "^3.11"
 
-[project]
-authors = [
-{% if cookiecutter.author_email is defined %}
-{name = "{{ cookiecutter.author_name }}"},
-{% else %}
-{name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}"},
-{% endif %}
+[tool.pytest.ini_options]
+testpaths = [
+  "tests",
 ]
 
-dependencies = [
-  "pandas >= 1.4.0",
-]
-dynamic = ["version"]
-name = "{{ cookiecutter.repo_name }}"
-readme = "README.md"
-requires-python = ">=3.8"
-
-[project.optional-dependencies]
-dev = [
-  "sklearn>=1.21.0"
+[tool.pytest.ini_options]
+testpaths = [
+  "tests",
 ]
 
 [tool.coverage.run]
@@ -29,19 +18,33 @@ source_pkgs = [
   "{{ cookiecutter.repo_name }}",
 ]
 
-[tool.mypy]
-files = "src/{{ cookiecutter.repo_name }}"
-ignore_missing_imports = true
-python_version = "3.8"
-
-[tool.pytest.ini_options]
-testpaths = [
-  "tests",
+########################################################################################
+# POETRY                                                                               #
+########################################################################################
+[tool.poetry]
+name = "{{ cookiecutter.repo_name }}"
+authors = [
+{% if cookiecutter.author_email is defined %}
+{name = "{{ cookiecutter.author_name }}"},
+{% else %}
+{name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}"},
+{% endif %}
 ]
+description = "some useful functions for myself"
+version = "0.0.0"
 
-[tool.setuptools.packages.find]
-where = ["src"]
+repository = "https://github.com/kuchedav/{{ cookiecutter.repo_name }}"
 
-[tool.setuptools_scm]
-write_to = "src/{{ cookiecutter.repo_name }}/_version.py"
-version_scheme = "python-simplified-semver"
+# README file(s) are used as the package description
+readme = ["README.md", "LICENSE"]
+
+# Keywords (translated to tags on the package index)
+keywords = ["packaging", "poetry"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+# Compatible Python versions
+python = "^3.11"
