@@ -39,9 +39,9 @@ except subprocess.CalledProcessError:
 ########################################################################################
 # VENV                                                                                 #
 ########################################################################################
-print("create environment with python 3.9")
+print("create environment with python 3.11")
 try:
-    subprocess.run(["python3.9","-m","venv","env"], check=True)
+    subprocess.run(["python3.11","-m","venv","env"], check=True)
 except subprocess.CalledProcessError:
     print("Error: Failed to create environment!")
     sys.exit(1)
@@ -72,7 +72,7 @@ except subprocess.CalledProcessError:
 print("Poetry install requirements")
 try:
     subprocess.run([
-        "poetry","install"
+        PYTHON_PATH,"-m","poetry","install"
     ], check=True)
 except subprocess.CalledProcessError:
     print("Error: Failed to install packages using poetry!")
@@ -85,7 +85,7 @@ password = decrypt_message(
 print("Poetry add credentials to publish")
 try:
     subprocess.run([
-        "poetry","config","http-basic.pypi","kuchedav",f"{password}"
+        PYTHON_PATH,"-m","poetry","config","http-basic.pypi","kuchedav",f"{password}"
     ], check=True)
 except subprocess.CalledProcessError:
     print("Error: Failed to install packages using poetry!")
