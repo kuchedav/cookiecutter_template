@@ -44,9 +44,8 @@ build-backend = "poetry_dynamic_versioning.backend"
 # https://pypi.org/project/poetry-dynamic-versioning/
 # you can use __version__ in your code as version variable
 enable = true
-metadata = true
 dirty = true
-style = semver
+style = "semver"
 
 [tool.poetry.dependencies]
 # Compatible Python versions
@@ -65,6 +64,7 @@ build = "^0.10.0"
 ruff = "^0.0.278"
 black = "^23.7.0"
 pyupgrade = "^3.9.0"
+poetry-dynamic-versioning = "^0.25.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^6.0.0"

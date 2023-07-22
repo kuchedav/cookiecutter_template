@@ -4,7 +4,7 @@
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PYTHON_INTERPRETER = $(PROJECT_DIR)/env/bin/python
-PACKAGE_VERSION_CLEAN = $(shell python -m setuptools_scm --strip-dev)
+PACKAGE_VERSION_CLEAN = $(shell python -m poetry version)
 
 globals:
 	@echo '=============================================='
@@ -19,8 +19,7 @@ commands:
 	@echo '=    displaying all functions available      ='
 	@echo '=============================================='
 	@echo 'test: run tox to fully test package'
-	@echo 'publish: publish package to pypi_test server'
-	@echo 'publish_prod: publish package to pypi server'
+	@echo 'publish: OUTDATED! USE POETRY PUBLISH INSTEAD'
 	@echo 'docker_package: docker build the Dockerfile to create the image'
 	@echo 'docker_hub_push: push docker image to docker hub'
 	@echo '		Make sure to be loged into docker with an access token'
@@ -37,30 +36,19 @@ clean:
 	find . -type d -name "__pycache__" -delete
 
 package:
-	rm -rf dist/*
-	$(PYTHON_INTERPRETER) -m build
-
-check_credentials_exist:
-	[ -f ~/.pypi ] && echo 'pypi credentials found' || echo '~/.pypi file not found!'
-
-publish: package check_credentials_exist
-	twine check dist/*
-	twine upload --repository testpypi --config-file ~/.pypi dist/*
 	@echo '==============================================='
-	@echo 'THIS COMMAND ONLY DEPLOYS TO TEST_PYPI'
-	@echo 'To deploy to PYPI use the command publish_prod'
+	@echo 'THIS FUNCTION HAS BEEN REPLACED WITH POETRY'
+	@echo 'please use following command: "poetry build"'
 
-publish_prod: check_credentials_exist test
-	twine check dist/*
-	twine upload --repository pypi --config-file ~/.pypi dist/*
+publish:
+	@echo '==============================================='
+	@echo 'THIS FUNCTION HAS BEEN REPLACED WITH POETRY'
+	@echo 'please use following command: "poetry publish"'
 
 test:
 	tox
 
-pip_requirements:
-	pip freeze > requirements.txt
-
-git: pip_requirements
+git:
 	git add .
 	git commit -m "debug"
 	git push origin main

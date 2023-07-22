@@ -92,20 +92,6 @@ except subprocess.CalledProcessError:
     sys.exit(1)
 
 ########################################################################################
-# Poetry dynamic versioning                                                            #
-########################################################################################
-# docu: https://pypi.org/project/poetry-dynamic-versioning/
-
-print("Poetry add dynamic versioning")
-try:
-    subprocess.run([
-        PYTHON_PATH,"-m","poetry","self","add",'"poetry-dynamic-versioning[plugin]"'
-    ], check=True)
-except subprocess.CalledProcessError:
-    print("Error:d Dynamic versioning activation failed!")
-    sys.exit(1)
-
-########################################################################################
 # pre-commit                                                                           #
 ########################################################################################
 print("setup pre-commit hook scripts")
