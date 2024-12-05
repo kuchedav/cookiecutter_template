@@ -4,7 +4,8 @@
 
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 PYTHON_INTERPRETER = $(PROJECT_DIR)/env/bin/python
-PACKAGE_VERSION_CLEAN = $(shell python -m poetry version)
+PACKAGE_VERSION_CLEAN = $(shell uv --version)
+
 
 globals:
 	@echo '=============================================='
@@ -19,7 +20,8 @@ commands:
 	@echo '=    displaying all functions available      ='
 	@echo '=============================================='
 	@echo 'test: run tox to fully test package'
-	@echo 'publish: OUTDATED! USE POETRY PUBLISH INSTEAD'
+	@echo 'package: build the package using uv'
+	@echo 'publish: publish the package using uv'
 	@echo 'docker_package: docker build the Dockerfile to create the image'
 	@echo 'docker_hub_push: push docker image to docker hub'
 	@echo '		Make sure to be loged into docker with an access token'
@@ -36,14 +38,12 @@ clean:
 	find . -type d -name "__pycache__" -delete
 
 package:
-	@echo '==============================================='
-	@echo 'THIS FUNCTION HAS BEEN REPLACED WITH POETRY'
-	@echo 'please use following command: "poetry build"'
+	@echo 'Building package using uv'
+	uv pip build
 
 publish:
-	@echo '==============================================='
-	@echo 'THIS FUNCTION HAS BEEN REPLACED WITH POETRY'
-	@echo 'please use following command: "poetry publish"'
+	@echo 'Publishing package using uv'
+	uv pip publish
 
 test:
 	tox

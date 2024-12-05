@@ -1,7 +1,7 @@
 [tool.mypy]
 files = "src/{{ cookiecutter.repo_name }}"
 ignore_missing_imports = true
-python_version = "^3.11"
+python_version = "^3.13"
 
 [tool.pytest.ini_options]
 testpaths = [
@@ -14,57 +14,52 @@ source_pkgs = [
 ]
 
 ########################################################################################
-# POETRY                                                                               #
+# PROJECT CONFIGURATION                                                                #
 ########################################################################################
-[tool.poetry]
+[project]
 name = "{{ cookiecutter.repo_name }}"
 {% if cookiecutter.author_email is defined %}
-authors = ["{{ cookiecutter.author_name }}"]
+authors = [
+    {name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}"},
+]
 {% else %}
-authors = ["{{ cookiecutter.author_name }}"]
-email = ["{{ cookiecutter.author_email }}"]
+authors = [
+    {name = "{{ cookiecutter.author_name }}"},
+]
 {% endif %}
+description = "{{ cookiecutter.description }}"
+readme = "README.md"
+requires-python = ">=3.13"
+keywords = ["packaging", "python"]
+license = {text = "BSD-3-Clause"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "requests",
+    # Add other dependencies here
+]
+dynamic = ["version"]
 
-description = "some useful functions for myself"
-version = "0.0.0" # do not change version! poetry-dynamic-versioning will handle this.
-
-repository = "https://github.com/kuchedav/{{ cookiecutter.repo_name }}"
-
-# README file(s) are used as the package description
-readme = ["README.md", "LICENSE"]
-
-# Keywords (translated to tags on the package index)
-keywords = ["packaging", "poetry"]
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "tox",
+    "coverage",
+    "flake8",
+    "pre-commit",
+    "mypy",
+    "black",
+    "ruff",
+    # Add other development dependencies here
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
-build-backend = "poetry_dynamic_versioning.backend"
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
 
-[tool.poetry-dynamic-versioning]
-# https://pypi.org/project/poetry-dynamic-versioning/
-# you can use __version__ in your code as version variable
-enable = true
-dirty = true
-style = "semver"
+[tool.setuptools_scm]
+write_to = "{{ cookiecutter.repo_name }}/_version.py"
 
-[tool.poetry.dependencies]
-# Compatible Python versions
-python = "^3.11"
-
-wheel = "^0.40.0"
-coverage = "^7.2.7"
-flake8 = "^6.0.0"
-tox = "^4.6.4"
-pre-commit-hooks = "^4.4.0"
-pre-commit = "^3.3.3"
-reorder-python-imports = "^3.10.0"
-mypy = "^1.4.1"
-twine = "^4.0.2"
-build = "^0.10.0"
-ruff = "^0.0.278"
-black = "^23.7.0"
-pyupgrade = "^3.9.0"
-poetry-dynamic-versioning = "^0.25.0"
-
-[tool.poetry.group.test.dependencies]
-pytest = "^6.0.0"
+# Keep other tool configurations

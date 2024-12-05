@@ -39,9 +39,9 @@ except subprocess.CalledProcessError:
 ########################################################################################
 # VENV                                                                                 #
 ########################################################################################
-print("create environment with python 3.11")
+print("create environment with python 3.13")
 try:
-    subprocess.run(["python3.11","-m","venv","env"], check=True)
+    subprocess.run(["python3.13","-m","venv","env"], check=True)
 except subprocess.CalledProcessError:
     print("Error: Failed to create environment!")
     sys.exit(1)
@@ -49,46 +49,34 @@ except subprocess.CalledProcessError:
 print(f"Create {'pip.ini' if OPERATING_SYSTEM=='Windows' else 'pip.conf'}")
 
 ########################################################################################
-# PIP install                                                                          #
+# Package install                                                                      #
 ########################################################################################
-print("Upgrade pip, setuptools and wheel")
+
+print("Upgrade pip and install uv")
 try:
     subprocess.run([
-        PYTHON_PATH, "-m","pip","install","--upgrade","pip","setuptools","wheel", "poetry"
+        PYTHON_PATH, "-m", "pip", "install", "--upgrade", "pip", "uv"
     ], check=True)
 except subprocess.CalledProcessError:
-    print("Error: Failed to upgrade pip, setuptools, wheel and poetry!")
+    print("Error: Failed to upgrade pip and install uv!")
     sys.exit(1)
 
 print("Install project as package")
 try:
     subprocess.run([
-        PYTHON_PATH, "-m","pip","install","-e",".[dev]"
+        PYTHON_PATH, "-m", "uv", "pip", "install", "-e", ".[dev]"
     ], check=True)
 except subprocess.CalledProcessError:
-    print("Error: Failed to upgrade pip, setuptools, wheel and poetry!")
+    print("Error: Failed to install project as package!")
     sys.exit(1)
 
-print("Poetry install requirements")
+print("uv install requirements")
 try:
     subprocess.run([
-        PYTHON_PATH,"-m","poetry","install"
+        PYTHON_PATH, "-m", "uv", "pip", "install", "-r", "requirements.txt"
     ], check=True)
 except subprocess.CalledProcessError:
-    print("Error: Failed to install packages using poetry!")
-    sys.exit(1)
-
-password = decrypt_message(
-    'gAAAAABku6ME79Pf2Uqs5VZnSPoc6NRBH2DnrsqI4wu9jNE6aML5iL5ZPpnyDy6j751SVBXL0NRAMen'
-    'InYrzHAW3IK4mRy0zvVQhMTmTQ8ZD_aDa3Oq_PIs='
-)
-print("Poetry add credentials to publish")
-try:
-    subprocess.run([
-        PYTHON_PATH,"-m","poetry","config","http-basic.pypi","kuchedav",f"{password}"
-    ], check=True)
-except subprocess.CalledProcessError:
-    print("Error: Failed to install packages using poetry!")
+    print("Error: Failed to install packages using uv!")
     sys.exit(1)
 
 ########################################################################################
