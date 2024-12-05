@@ -5,8 +5,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-from daves_utilities.david_secrets import decrypt_message, encrypt_message
-
 
 OPERATING_SYSTEM = platform.system()
 if OPERATING_SYSTEM == "Windows":
@@ -17,6 +15,7 @@ else:
     PYTHON_PATH = "env/bin/python"
     PIP_PATH = "env/bin/pip"
     PRE_COMMIT_PATH = "env/bin/pre-commit"
+
 
 print("set author")
 author_name = getpass.getuser()
