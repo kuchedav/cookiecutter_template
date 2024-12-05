@@ -18,15 +18,9 @@ source_pkgs = [
 ########################################################################################
 [project]
 name = "{{ cookiecutter.repo_name }}"
-{% if cookiecutter.author_email is defined %}
 authors = [
-    {name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}"},
+    { name = "{{cookiecutter.author_name}}"{% if cookiecutter.author_email %}, email = "{{cookiecutter.author_email}}"{% endif %} }
 ]
-{% else %}
-authors = [
-    {name = "{{ cookiecutter.author_name }}"},
-]
-{% endif %}
 description = "{{ cookiecutter.description }}"
 readme = "README.md"
 requires-python = ">=3.13"
@@ -60,6 +54,4 @@ requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
-write_to = "{{ cookiecutter.repo_name }}/_version.py"
-
-# Keep other tool configurations
+write_to = "src/{{ cookiecutter.repo_name }}/_version.py"
