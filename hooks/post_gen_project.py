@@ -22,6 +22,9 @@ pythonproject_toml.write_text(
     pythonproject_toml.read_text().replace("<AUTHOR_NAME>", author_name)
 )
 
+########################################################################################
+# GIT init                                                                             #
+########################################################################################
 print("Initialize git")
 try:
     subprocess.run(["git","init","."], check=True)
@@ -30,6 +33,9 @@ except subprocess.CalledProcessError:
     print("Error: Failed to initialize the repository with git!")
     sys.exit(1)
 
+########################################################################################
+# VENV                                                                                 #
+########################################################################################
 print("create environemnt with python 3.13")
 try:
     subprocess.run(["python3.13","-m","venv","env"], check=True)
@@ -39,24 +45,44 @@ except subprocess.CalledProcessError:
 
 print(f"Create {'pip.ini' if OPERATING_SYSTEM=='Windows' else 'pip.conf'}")
 
+########################################################################################
+# Package install                                                                      #
+########################################################################################
 print("Upgrade pip, setuptools and wheel")
 try:
     subprocess.run([
-        PYTHON_PATH, "-m","pip","install","--upgrade","pip","setuptools","wheel"
+        PYTHON_PATH, "-m","pip","install","--upgrade","pip","setuptools","wheel","uv"
     ], check=True)
 except subprocess.CalledProcessError:
     print("Error: Failed to upgrade pip, setuptools and wheel!")
     sys.exit(1)
 
-print("Install requirements")
+print("Install project as package")
 try:
     subprocess.run([
-        PIP_PATH, "install", "--upgrade", "-r", "requirements.txt"
+        PYTHON_PATH, "-m", "uv", "pip", "install", "-e", ".[dev]"
     ], check=True)
 except subprocess.CalledProcessError:
-    print("Error: Failed to install pip packages!")
+    print("Error: Failed to install project as package!")
     sys.exit(1)
 
+print("uv install requirements")
+
+requirements_path = Path("requirements.txt")
+if requirements_path.is_file():
+    try:
+        subprocess.run([
+            PYTHON_PATH, "-m", "uv", "pip", "install", "-r", "requirements.txt"
+        ], check=True)
+    except subprocess.CalledProcessError:
+        print("Error: Failed to install packages using uv!")
+        sys.exit(1)
+else:
+    print("requirements.txt not found, skipping installation.")
+
+########################################################################################
+# pre-commit                                                                           #
+########################################################################################
 print("setup git hook scripts")
 try:
     subprocess.run([
@@ -66,6 +92,9 @@ except subprocess.CalledProcessError:
     print("Error: Failed to setup git hook scripts!")
     sys.exit(1)
 
+########################################################################################
+# GIT initial commit                                                                   #
+########################################################################################
 print("initial commit")
 try:
     for i in range(2):
