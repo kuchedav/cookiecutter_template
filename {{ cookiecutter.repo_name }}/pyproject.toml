@@ -17,7 +17,7 @@ dependencies = [
 dynamic = ["version"]
 name = "{{ cookiecutter.repo_name }}"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.13"
 
 [project.optional-dependencies]
 dev = [
@@ -32,7 +32,7 @@ source_pkgs = [
 [tool.mypy]
 files = "src/{{ cookiecutter.repo_name }}"
 ignore_missing_imports = true
-python_version = "3.8"
+python_version = "3.13"
 
 [tool.pytest.ini_options]
 testpaths = [
