@@ -30,11 +30,11 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.13",
 ]
+dynamic = ["version"]
 dependencies = [
     "requests",
     # Add other dependencies here
 ]
-dynamic = ["version"]
 
 [project.optional-dependencies]
 dev = [

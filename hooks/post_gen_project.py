@@ -46,12 +46,6 @@ except subprocess.CalledProcessError:
     print("Error: Failed to create environment!")
     sys.exit(1)
 
-# Activate the virtual environment
-if os.name == 'nt':  # Windows
-    activate_script = os.path.join("env", "Scripts", "activate")
-else:  # Unix or MacOS
-    activate_script = os.path.join("env", "bin", "activate")
-
 print(f"Create {'pip.ini' if os.name == 'nt' else 'pip.conf'}")
 
 ########################################################################################
