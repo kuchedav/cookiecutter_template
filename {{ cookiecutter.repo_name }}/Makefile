@@ -36,9 +36,24 @@ clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
 
+test:
+	tox
+
+pip_requirements:
+	pip freeze > requirements.txt
+
+git: pip_requirements
+	git add .
+	git commit -m "debug"
+	git push origin main
+
+########################################################################################
+# Package & pypi                                                                       #
+########################################################################################
+
 package:
-	rm -rf dist/*
-	$(PYTHON_INTERPRETER) -m build
+	@echo 'Building package using uv'
+	python -m uv build
 
 check_credentials_exist:
 	[ -f ~/.pypi ] && echo 'pypi credentials found' || echo '~/.pypi file not found!'
@@ -54,17 +69,10 @@ publish_prod: check_credentials_exist test
 	twine check dist/*
 	twine upload --repository pypi --config-file ~/.pypi dist/*
 
-test:
-	tox
 
-pip_requirements:
-	pip freeze > requirements.txt
-
-git: pip_requirements
-	git add .
-	git commit -m "debug"
-	git push origin main
-
+########################################################################################
+# Docker & Kubernetes                                                                  #
+########################################################################################
 docker_package:
 	@echo '==========================================================================='
 	@echo 'MAKE SURE TO RUN ONLY ON A CLEAN GIT BRANCH'

@@ -10,18 +10,31 @@ authors = [
 {name = "{{ cookiecutter.author_name }}", email = "{{ cookiecutter.author_email }}"},
 {% endif %}
 ]
-
-dependencies = [
-  "pandas >= 1.4.0",
-]
-dynamic = ["version"]
 name = "{{ cookiecutter.repo_name }}"
 readme = "README.md"
 requires-python = ">=3.13"
+dynamic = ["version"]
+dependencies = [
+  "pandas >= 1.4.0",
+]
 
 [project.optional-dependencies]
 dev = [
-  "sklearn>=1.21.0"
+    "pytest",
+    "tox",
+    "coverage",
+    "flake8",
+    "pre-commit",
+    "mypy",
+    "black",
+    "ruff",
+    "daves_utilities",
+    "setuptools_scm",
+    "twine",
+    "uv",
+    "pre-commit",
+    "pre-commit-hooks",
+    "reorder-python-imports",
 ]
 
 [tool.coverage.run]
