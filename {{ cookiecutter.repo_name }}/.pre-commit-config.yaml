@@ -24,8 +24,15 @@ repos:
         entry: ruff
         language: python
         require_serial: true
-        types_or: [python, pyi, jupyter]
-        args: [--fix, --exit-non-zero-on-fix]
+        types: [python, pyi, jupyter]
+        args: [
+          "--exit-non-zero-on-fix",
+          "--select", "E9,F63,F7,F82",
+          "--exclude", "tests/*",
+          "--config", "ruff.toml",
+          "--fix",
+          "--line-length", "88"
+        ]
       - id: pre-commit-hooks
         name: fix UTF-8 byte order marker
         entry: fix-byte-order-marker

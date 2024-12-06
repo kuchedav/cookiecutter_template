@@ -19,7 +19,7 @@ source_pkgs = [
 [project]
 name = "{{ cookiecutter.repo_name }}"
 authors = [
-    { name = "{{cookiecutter.author_name}}"{% if cookiecutter.author_email %}, email = "{{cookiecutter.author_email}}"{% endif %} }
+    {name = "{{ cookiecutter.author_name }}"}
 ]
 description = "{{ cookiecutter.description }}"
 readme = "README.md"
@@ -46,6 +46,7 @@ dev = [
     "mypy",
     "black",
     "ruff",
+    "daves_utilities",
     # Add other development dependencies here
 ]
 

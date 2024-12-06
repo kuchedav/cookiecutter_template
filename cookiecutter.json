@@ -3,7 +3,6 @@
     "repo_name": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
     "chart_name": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
     "author_name": "Your name",
-    "author_email": "E-mail address (optional)",
     "description": "A short description of the project. (optional)",
     "open_source_license": ["MIT", "BSD-3-Clause", "No license file"]
 }

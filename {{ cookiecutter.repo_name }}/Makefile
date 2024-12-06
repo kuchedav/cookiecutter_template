@@ -39,11 +39,11 @@ clean:
 
 package:
 	@echo 'Building package using uv'
-	uv pip build
+	python -m uv build
 
 publish:
 	@echo 'Publishing package using uv'
-	uv pip publish
+	python -m uv publish
 
 test:
 	tox

@@ -4,7 +4,8 @@ from re import sub
 import subprocess
 import sys
 from pathlib import Path
-
+import os
+from daves_utilities.david_secrets import decrypt_message
 
 OPERATING_SYSTEM = platform.system()
 if OPERATING_SYSTEM == "Windows":
@@ -45,7 +46,13 @@ except subprocess.CalledProcessError:
     print("Error: Failed to create environment!")
     sys.exit(1)
 
-print(f"Create {'pip.ini' if OPERATING_SYSTEM=='Windows' else 'pip.conf'}")
+# Activate the virtual environment
+if os.name == 'nt':  # Windows
+    activate_script = os.path.join("env", "Scripts", "activate")
+else:  # Unix or MacOS
+    activate_script = os.path.join("env", "bin", "activate")
+
+print(f"Create {'pip.ini' if os.name == 'nt' else 'pip.conf'}")
 
 ########################################################################################
 # Package install                                                                      #
@@ -70,13 +77,18 @@ except subprocess.CalledProcessError:
     sys.exit(1)
 
 print("uv install requirements")
-try:
-    subprocess.run([
-        PYTHON_PATH, "-m", "uv", "pip", "install", "-r", "requirements.txt"
-    ], check=True)
-except subprocess.CalledProcessError:
-    print("Error: Failed to install packages using uv!")
-    sys.exit(1)
+
+requirements_path = Path("requirements.txt")
+if requirements_path.is_file():
+    try:
+        subprocess.run([
+            PYTHON_PATH, "-m", "uv", "pip", "install", "-r", "requirements.txt"
+        ], check=True)
+    except subprocess.CalledProcessError:
+        print("Error: Failed to install packages using uv!")
+        sys.exit(1)
+else:
+    print("requirements.txt not found, skipping installation.")
 
 ########################################################################################
 # pre-commit                                                                           #
