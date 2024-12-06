@@ -47,12 +47,21 @@ git: pip_requirements
 	git commit -m "debug"
 	git push origin main
 
+check_project_version:
+	@if python -c "import setuptools_scm; print(setuptools_scm.get_version())" | grep -q "dev"; then \
+		echo "Project is running a development version! Cannot be published!"; \
+		exit 1; \
+	else \
+		echo "Project is running a full release version"; \
+	fi
+
 ########################################################################################
 # Package & pypi                                                                       #
 ########################################################################################
 
 package:
 	@echo 'Building package using uv'
+	rm -rf dist
 	python -m uv build
 
 check_credentials_exist:
@@ -65,7 +74,7 @@ publish: package check_credentials_exist
 	@echo 'THIS COMMAND ONLY DEPLOYS TO TEST_PYPI'
 	@echo 'To deploy to PYPI use the command publish_prod'
 
-publish_prod: check_credentials_exist test
+publish_prod: check_project_version check_credentials_exist test package
 	twine check dist/*
 	twine upload --repository pypi --config-file ~/.pypi dist/*
 
@@ -77,16 +86,16 @@ docker_package:
 	@echo '==========================================================================='
 	@echo 'MAKE SURE TO RUN ONLY ON A CLEAN GIT BRANCH'
 	@echo '==========================================================================='
-	docker build . -t kuchedav/{{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN)
+	docker build . -t kuchedav/dava-explorer:$(PACKAGE_VERSION_CLEAN)
 
 docker_hub_push: docker_package
-	docker push kuchedav/{{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN)
+	docker push kuchedav/dava-explorer:$(PACKAGE_VERSION_CLEAN)
 
 docker_clean:
-	docker rmi kuchedav/{{ cookiecutter.chart_name }}:$(PACKAGE_VERSION_CLEAN)
+	docker rmi kuchedav/dava-explorer:$(PACKAGE_VERSION_CLEAN)
 
 helm: docker_hub_push docker_clean
 	sed -i "" "/^\([[:space:]]*version: \).*/s//\1$(PACKAGE_VERSION_CLEAN)/" helm/Chart.yaml
 	helm lint ./helm/
-	helm uninstall {{ cookiecutter.chart_name }}
-	helm install {{ cookiecutter.chart_name }} ./helm
+	helm uninstall dava-explorer
+	helm install dava-explorer ./helm
